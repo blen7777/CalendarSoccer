@@ -7,18 +7,23 @@
         android:fillViewport="false">
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context="com.applaudo.testapplaudo.Detail">
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <VideoView
             android:id="@+id/video_url"
             android:layout_width="fill_parent"
-            android:layout_height="200dp" />
+            android:layout_height="300dp"
+            android:clickable="true"
+            android:onClick="playVideo"/>
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="150dp"
+            android:id="@+id/img_stadiun"
+            android:src="@drawable/stadiun"
+            android:scaleType="centerCrop"/>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,22 +35,27 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_gravity="center"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:id="@+id/img_logo"
                     android:src="@drawable/team"
                     android:scaleType="centerCrop"/>
 
             </LinearLayout>
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_weight="1"
                 android:padding="8dp"
-                android:layout_height="match_parent"
+                android:layout_marginBottom="4dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
@@ -54,12 +64,14 @@
                     android:id="@+id/name_since"
                     android:text="ARSENAL -  1880"
                     android:textStyle="bold"
+                    android:textSize="21sp"
                     android:textColor="@color/colorAccent" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/description"
+                    android:textSize="12sp"
                     android:text="When you intend to perform a new search, make sure to clear the existing contents from the list and notify the adapter the contents"/>
 
             </LinearLayout>
@@ -95,8 +107,8 @@
                     android:layout_height="wrap_content"
                     android:text="Stadiun: Magico Gonzalez"
                     android:layout_marginTop="4dp"
-                    android:textSize="16sp"
-                    android:textColor="@color/cardview_dark_background" />
+                    android:textSize="14sp"
+                    android:textColor="@color/colorAccent" />
 
                 <TextView
                     android:id="@+id/phone"
@@ -115,7 +127,7 @@
                     android:text="Gunners"
                     android:layout_marginTop="4dp"
                     android:textSize="14sp"
-                    android:textColor="@color/cardview_dark_background" />
+                    android:textColor="@color/colorAccent" />
 
 
                 <TextView
@@ -134,32 +146,20 @@
                     android:text="calle las tuinitas Jejejejeje"
                     android:layout_marginTop="4dp"
                     android:textSize="14sp"
-                    android:textColor="@color/cardview_dark_background" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="200dp"
-                    android:layout_height="150dp"
-                    android:id="@+id/img_stadiun"
-                    android:src="@drawable/stadiun"
-                    android:scaleType="centerCrop"/>
+                    android:textColor="@color/colorAccent" />
 
             </LinearLayout>
+
 
         </LinearLayout>
 
 
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/mapView"
+        <fragment
+            android:id="@+id/myMap"
+            android:layout_marginTop="8dp"
+            android:name="com.google.android.gms.maps.MapFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="300dp" />
 
     </LinearLayout>
 

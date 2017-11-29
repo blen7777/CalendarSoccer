@@ -1,22 +1,28 @@
 package com.applaudo.testapplaudo;
 
 import android.app.ProgressDialog;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.applaudo.testapplaudo.Adapters.AdapterList;
 import com.applaudo.testapplaudo.Models.List;
+import com.applaudo.testapplaudo.Models.Team;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,8 +32,9 @@ import java.util.ArrayList;
 
 public class Home extends AppCompatActivity {
 
-    ArrayList<List> dataset;
+    ArrayList<Team> dataset;
     AdapterList adapterList;
+    private RelativeLayout mCLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +45,8 @@ public class Home extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setHasFixedSize(true);
+
+        mCLayout = (RelativeLayout) findViewById(R.id.myLayout);
 
         String URL = "http://applaudostudios.com/external/applaudo_homework.json";
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -50,7 +59,7 @@ public class Home extends AppCompatActivity {
                     public void onResponse(JSONArray response)
                     {
 
-                        dataset = new ArrayList<List>();
+                        dataset = new ArrayList<Team>();
                         dataset = parser(response);
                         adapterList =  new AdapterList(dataset, R.layout.row_team);
                         recyclerView.setAdapter(adapterList);
@@ -61,7 +70,9 @@ public class Home extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError volleyError)
             {
-
+                progressDialog.dismiss();
+                Snackbar.make(mCLayout, "Algo salió mal :(", Snackbar.LENGTH_LONG)
+                                .show();
             }
         });
 
@@ -69,19 +80,30 @@ public class Home extends AppCompatActivity {
         queue.add(request);
     }
 
-    private ArrayList<List> parser(JSONArray response)
+    private ArrayList<Team> parser(JSONArray response)
     {
-        ArrayList<List> teamAux = new ArrayList<List>();
+        ArrayList<Team> teamAux = new ArrayList<Team>();
         for (int i=0; i<response.length();i++)
         {
-            List p = new List();
+            Team p = new Team();
             try
             {
                 JSONObject jsonObject = (JSONObject) response.get(i);
-                p.setId(jsonObject.getString("id"));
-                p.setTeam_name(jsonObject.getString("team_name"));
-                p.setTeam_logo(jsonObject.getString("img_logo"));
-                p.setAddress(jsonObject.getString("address"));
+                p.setID(jsonObject.getString("id"));
+                p.setName(jsonObject.getString("team_name"));
+                p.setSince(jsonObject.getString("since"));
+                p.setCoach(jsonObject.getString("coach"));
+                p.setTeam_nickname(jsonObject.getString("team_nickname"));
+                p.setStadiun(jsonObject.getString("stadium"));
+                p.setImg_logo(jsonObject.getString("img_logo"));
+                p.setImg_stadiun(jsonObject.getString("img_stadium"));
+                p.setLatitude(jsonObject.getString("latitude"));
+                p.setLongitude(jsonObject.getString("longitude"));
+                p.setWebsite(jsonObject.getString("website"));
+                p.setAdress(jsonObject.getString("address"));
+                p.setPhone_number(jsonObject.getString("phone_number"));
+                p.setDescription(jsonObject.getString("description"));
+                p.setVideo_url(jsonObject.getString("video_url"));
                 teamAux.add(p);
 
             }

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Applaudo Homework</string>
-    <string name="soccer_calendar">Soccer Calendar</string>
+    <string name="soccer_calendar">Soccer Teams</string>
+    <string name="google_android_map_api_key">AIzaSyCrSSySyiGarNWh5oQWasHm8xw7Thdbosc</string>
 </resources>

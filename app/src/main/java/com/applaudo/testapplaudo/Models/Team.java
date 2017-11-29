@@ -3,6 +3,8 @@ package com.applaudo.testapplaudo.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
+
 /**
  * Created by jose.lopez04 on 22/11/2017.
  */
@@ -25,7 +27,7 @@ public class Team implements Parcelable{
     private String video_url;
     private String name;
 
-    public Team(String ID) {
+    public Team() {
        super();
     }
 
