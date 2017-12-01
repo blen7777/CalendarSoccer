@@ -35,6 +35,7 @@ public class Home extends AppCompatActivity {
     ArrayList<Team> dataset;
     AdapterList adapterList;
     private RelativeLayout mCLayout;
+    ArrayList<String> schedule = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,12 +87,13 @@ public class Home extends AppCompatActivity {
         for (int i=0; i<response.length();i++)
         {
             Team p = new Team();
+            String texto = "";
             try
             {
+                //get team data
                 JSONObject jsonObject = (JSONObject) response.get(i);
                 p.setID(jsonObject.getString("id"));
-                p.setName(jsonObject.getString("team_name"));
-                p.setSince(jsonObject.getString("since"));
+                p.setName(jsonObject.getString("team_name")+" -- "+jsonObject.getString("since"));
                 p.setCoach(jsonObject.getString("coach"));
                 p.setTeam_nickname(jsonObject.getString("team_nickname"));
                 p.setStadiun(jsonObject.getString("stadium"));
@@ -104,13 +106,23 @@ public class Home extends AppCompatActivity {
                 p.setPhone_number(jsonObject.getString("phone_number"));
                 p.setDescription(jsonObject.getString("description"));
                 p.setVideo_url(jsonObject.getString("video_url"));
+
+                // get calendar data
+                JSONArray dataCalendar = jsonObject.getJSONArray("schedule_games");
+                for (int j=0; j<dataCalendar.length(); j++)
+                {
+                    JSONObject calendObjec = (JSONObject) dataCalendar.get(j);
+                    texto += calendObjec.getString("date")+" -- "+calendObjec.getString("stadium");
+                    texto += "\n";
+                }
+                p.setSince(texto);
                 teamAux.add(p);
 
             }
             catch (JSONException e)
             {
                 e.printStackTrace();
-                Toast.makeText(getApplication(),"Refresh",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplication(),"Error",Toast.LENGTH_LONG).show();
             }
         }
 

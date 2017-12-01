@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by jose.lopez04 on 22/11/2017.
@@ -26,6 +27,7 @@ public class Team implements Parcelable{
     private String description;
     private String video_url;
     private String name;
+    private String calend;
 
     public Team() {
        super();
@@ -47,6 +49,7 @@ public class Team implements Parcelable{
         this.description=parcel.readString();
         this.video_url=parcel.readString();
         this.name=parcel.readString();
+        this.calend=parcel.readString();
     }
 
     @Override
@@ -71,6 +74,7 @@ public class Team implements Parcelable{
         parcel.writeString(this.description);
         parcel.writeString(this.video_url);
         parcel.writeString(this.name);
+        parcel.writeString(this.calend);
     }
 
     public static final Creator<Team> CREATOR= new Creator<Team>() {
@@ -203,5 +207,13 @@ public class Team implements Parcelable{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCalend() {
+        return calend;
+    }
+
+    public void setCalend(String calend) {
+        this.calend = calend;
     }
 }

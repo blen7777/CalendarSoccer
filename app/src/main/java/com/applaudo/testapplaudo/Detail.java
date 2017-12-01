@@ -1,44 +1,35 @@
-package com.applaudo.testapplaudo;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
-import android.os.Vibrator;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.MediaController;
-import android.widget.TextView;
-import android.widget.VideoView;
+         package com.applaudo.testapplaudo;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
-import com.applaudo.testapplaudo.Models.Team;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.squareup.picasso.Picasso;
+         import android.content.Context;
+         import android.content.Intent;
+         import android.content.SharedPreferences;
+         import android.net.Uri;
+         import android.os.Vibrator;
+         import android.support.v4.view.MenuItemCompat;
+         import android.support.v7.app.AppCompatActivity;
+         import android.support.v7.widget.ShareActionProvider;
+         import android.os.Bundle;
+         import android.support.v7.widget.Toolbar;
+         import android.util.Log;
+         import android.view.Menu;
+         import android.view.MenuItem;
+         import android.view.View;
+         import android.widget.ImageView;
+         import android.widget.MediaController;
+         import android.widget.TextView;
+         import android.widget.VideoView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.DecimalFormat;
-import java.util.ArrayList;
+         import com.applaudo.testapplaudo.Models.Team;
+         import com.google.android.gms.maps.CameraUpdate;
+         import com.google.android.gms.maps.CameraUpdateFactory;
+         import com.google.android.gms.maps.GoogleMap;
+         import com.google.android.gms.maps.MapFragment;
+         import com.google.android.gms.maps.OnMapReadyCallback;
+         import com.google.android.gms.maps.model.LatLng;
+         import com.google.android.gms.maps.model.Marker;
+         import com.google.android.gms.maps.model.MarkerOptions;
+         import com.squareup.picasso.Picasso;
 
 public class Detail extends AppCompatActivity implements OnMapReadyCallback{
 
@@ -56,8 +47,10 @@ public class Detail extends AppCompatActivity implements OnMapReadyCallback{
     GoogleMap mapa;
     double lat ;
     double lng ;
+    String calendar;
     String teamName;
-    private Marker marcador;
+    Marker marcador;
+    ShareActionProvider mShareActionProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +63,7 @@ public class Detail extends AppCompatActivity implements OnMapReadyCallback{
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(R.drawable.ic_left_row);
+
 
         //---------Instancia de los campos  en Layout
         myName = (TextView) findViewById(R.id.name_since);
@@ -96,24 +90,24 @@ public class Detail extends AppCompatActivity implements OnMapReadyCallback{
         myVideo = (VideoView) findViewById(R.id.video_url);
         //--------------END---------------------------
 
-       Team team = getIntent().getParcelableExtra("myteam");
+        Team team = getIntent().getParcelableExtra("myteam");
 
-       //-- set de valor a los campos  de la vista
-       myName.setText(team.getName()+" - "+team.getSince());
-       myDescription.setText(team.getDescription());
-       myCoach.setText("Coach: "+team.getCoach());
-       myStadiun.setText("Stadiun: "+team.getStadiun());
-       myPhone.setText("Phone: "+team.getPhone_number());
-       myNickname.setText("Nickname: "+team.getTeam_nickname());
-       myWebSite.setText("WebSite: "+team.getWebsite());
-       myAddress.setText("Address: "+team.getAdress());
+        //-- set de valor a los campos  de la vista
+        myName.setText(team.getName());
+        myDescription.setText(team.getDescription());
+        myCoach.setText("Coach: "+team.getCoach());
+        myStadiun.setText("Stadiun: "+team.getStadiun());
+        myPhone.setText("Phone: "+team.getPhone_number());
+        myNickname.setText("Nickname: "+team.getTeam_nickname());
+        myWebSite.setText("WebSite: "+team.getWebsite());
+        myAddress.setText("Address: "+team.getAdress());
 
-       teamName = team.getName();
-       lat = Double.parseDouble(team.getLatitude());
-       lng = Double.parseDouble(team.getLongitude());
+        teamName = team.getName();
+        lat = Double.parseDouble(team.getLatitude());
+        lng = Double.parseDouble(team.getLongitude());
+        calendar = team.getSince();
 
-
-       //  Set Images
+        //  Set Images
         Picasso
                 .with(myLogo.getContext())
                 .load(team.getImg_logo())
@@ -126,7 +120,7 @@ public class Detail extends AppCompatActivity implements OnMapReadyCallback{
                 .error(R.drawable.image_found)
                 .into(myStadiunImg);
 
-       // Set videoView
+        // Set videoView
         Uri uri = Uri.parse(team.getVideo_url());
         myVideo.setMediaController((new MediaController(this)));
         myVideo.setVideoURI(uri);
@@ -143,15 +137,15 @@ public class Detail extends AppCompatActivity implements OnMapReadyCallback{
     }
 
     private void agregarMarcador(final double latitude,final double longitude, String name)
-        {
-            LatLng coordenadas = new LatLng(latitude, longitude);
-            CameraUpdate miUbicacion = CameraUpdateFactory.newLatLngZoom(coordenadas, 16);
-            marcador = mapa.addMarker(new MarkerOptions()
-                    .position(coordenadas)
-                    .snippet(name)
-                    .title(name));
-            mapa.animateCamera(miUbicacion);
-        }
+    {
+        LatLng coordenadas = new LatLng(latitude, longitude);
+        CameraUpdate miUbicacion = CameraUpdateFactory.newLatLngZoom(coordenadas, 16);
+        marcador = mapa.addMarker(new MarkerOptions()
+                .position(coordenadas)
+                .snippet(name)
+                .title(name));
+        mapa.animateCamera(miUbicacion);
+    }
 
     public void playVideo(View view)
     {
@@ -160,9 +154,28 @@ public class Detail extends AppCompatActivity implements OnMapReadyCallback{
             myVideo.stopPlayback();
         }
         else
-            {
-                myVideo.start();
-            }
+        {
+            myVideo.start();
+        }
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.action_menu, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.action_share);
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+        shareSchedule(calendar);
+        return true;
+    }
+
+    private void shareSchedule(String schedule)
+    {
+        Intent  intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT,schedule);
+        mShareActionProvider.setShareIntent(intent);
     }
 }

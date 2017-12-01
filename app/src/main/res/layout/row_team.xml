@@ -41,7 +41,7 @@
                 android:textColor="@color/cardview_dark_background"
                 android:singleLine="true"
                 android:text="Title Nes test etstad odpapodjapo"
-                android:textSize="21sp"
+                android:textSize="18sp"
                 android:textStyle="normal" />
 
             <TextView
@@ -55,7 +55,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="Donec rutrum congue leo eget malesuada sed magna dicapibus."
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
         </LinearLayout>
 
